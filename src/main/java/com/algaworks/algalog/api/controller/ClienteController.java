@@ -2,6 +2,8 @@ package com.algaworks.algalog.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -61,12 +63,12 @@ public class ClienteController {
 	//essa annotation diz que os parametros do corpo da requisicao, serao usados para criar o obejto cliente
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)	//Faz com que o codigo de reposta seja o  "201 - Created" em vez do "200 - Ok"
-	public Cliente adicionar (@RequestBody Cliente cliente) {
+	public Cliente adicionar (@Valid @RequestBody Cliente cliente) {	//@Valid faz a validação logo na chamada do metodo, antes de ir pro banco
 		return clienteRepository.save(cliente);  //já salva e retonar o cliente
 	}
 	
 	@PutMapping("/{clienteId}")
-	public ResponseEntity<Cliente> alterar(@PathVariable Long clienteId, @RequestBody Cliente cliente) {	
+	public ResponseEntity<Cliente> alterar(@Valid @PathVariable Long clienteId, @RequestBody Cliente cliente) {	
 		
 		if(!clienteRepository.existsById(clienteId)){
 			return ResponseEntity.notFound().build();

@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,10 +27,18 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank				//Evita que o nome seja "null" ou esteja vazio ""
+	@Size(max=90)			//Define tamanho maximo (Tem que ser condizente com o banco)
 	private String nome;
+	
+	@NotBlank				
+	@Size(max=255)
+	@Email					//Verifica se a syntaxe do email está correta
 	private String email;
 	
+	@NotBlank
 	@Column(name = "fone")	//Como mudamos o nome da coluna telefone para "fone",  precisamos dessa annotation
+	@Size(max=20)
 	private String telefone;
 	
 }

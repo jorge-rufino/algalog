@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algalog.domain.model.Cliente;
 import com.algaworks.algalog.domain.repository.ClienteRepository;
+import com.algaworks.algalog.domain.service.ClienteServiceCRUD;
 
 import lombok.AllArgsConstructor;
 
@@ -32,6 +33,8 @@ public class ClienteController {
 	
 	//Poderia usar a annotation "@Autowired" mas como ja usamos "@AllArgsConstructor" para gerar o construtor, ficou desnecessario
 	ClienteRepository clienteRepository;
+	ClienteServiceCRUD clienteService;
+	
 	
 	@GetMapping		//Quando for chamado/requisitado, chamara este metodo
 	public List<Cliente> listar() {
@@ -64,7 +67,8 @@ public class ClienteController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)	//Faz com que o codigo de reposta seja o  "201 - Created" em vez do "200 - Ok"
 	public Cliente adicionar (@Valid @RequestBody Cliente cliente) {	//@Valid faz a validação logo na chamada do metodo, antes de ir pro banco
-		return clienteRepository.save(cliente);  //já salva e retonar o cliente
+//		return clienteRepository.save(cliente);  //já salva e retonar o cliente
+		return clienteService.salvar(cliente);
 	}
 	
 	@PutMapping("/{clienteId}")
@@ -75,7 +79,8 @@ public class ClienteController {
 		}
 		
 		cliente.setId(clienteId);	//Está setando o cliente para ser alterado, se nao ele criaria um novo cliente
-		cliente = clienteRepository.save(cliente);
+//		cliente = clienteRepository.save(cliente);
+		cliente = clienteService.salvar(cliente);
 		
 		return ResponseEntity.ok(cliente); 
 	}
@@ -87,7 +92,8 @@ public class ClienteController {
 			return ResponseEntity.notFound().build();
 		}
 		
-		clienteRepository.deleteById(clienteId);
+//		clienteRepository.deleteById(clienteId);
+		clienteService.deletar(clienteId);
 		
 		return ResponseEntity.noContent().build();	//Retorna codigo 204 (Sucesso sem corpo na resposta)
 	}

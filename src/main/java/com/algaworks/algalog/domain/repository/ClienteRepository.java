@@ -1,6 +1,7 @@
 package com.algaworks.algalog.domain.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -20,4 +21,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long>{
 				
 	//Este metodo traz resultados que contenham em qualquer lugar a string.... o metodo de cima faz uma busca exata
 	List<Cliente> findByNomeContaining(String nome);	
+	
+	Optional<Cliente> findByEmail (String email);	
 }

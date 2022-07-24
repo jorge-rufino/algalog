@@ -36,7 +36,7 @@ public class ClienteController {
 	ClienteServiceCRUD clienteService;
 	
 	
-	@GetMapping		//Quando for chamado/requisitado, chamara este metodo
+	@GetMapping		//Quando for chamado/requisitado um GET na requisição, chamara este metodo
 	public List<Cliente> listar() {
 		/*return manager.createQuery("from Cliente", Cliente.class)
 				.getResultList();

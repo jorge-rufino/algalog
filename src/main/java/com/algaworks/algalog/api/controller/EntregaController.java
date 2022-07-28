@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algalog.api.assembler.EntregaAssembler;
+import com.algaworks.algalog.api.model.EntregaModel;
+import com.algaworks.algalog.api.model.input.EntregaInputModel;
 import com.algaworks.algalog.domain.model.Entrega;
 import com.algaworks.algalog.domain.repository.EntregaRepository;
 import com.algaworks.algalog.domain.service.EntregaService;
@@ -24,24 +27,27 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/entregas")
 public class EntregaController {
-	EntregaService entregaService;
-	EntregaRepository entregaRepository;
+	private EntregaService entregaService;
+	private EntregaRepository entregaRepository;
+	private EntregaAssembler entregaAssembler;	//Faz a conversao de Entrega para EntregaModel - Preceisa de uma classe de configuraçao especifica
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Entrega solicitar(@Valid @RequestBody Entrega entrega) {
-		return entregaService.solicitar(entrega);
+	public EntregaModel solicitar(@Valid @RequestBody EntregaInputModel entregaInputModel) {	//Recebe uma EntregaInput
+		Entrega entregaConvertida = entregaAssembler.toEntity(entregaInputModel);				//Converte para uma Entrega do Domain Model
+		Entrega entregaSolicitada = entregaService.solicitar(entregaConvertida);			
+		return entregaAssembler.toModel(entregaSolicitada);
 	}
 	
 	@GetMapping
-	public List<Entrega> listar(){
-		return entregaRepository.findAll();
+	public List<EntregaModel> listar(){
+		return entregaAssembler.toCollectionModel(entregaRepository.findAll());
 	}
 	
 	@GetMapping("/{entregaId}")
-	public ResponseEntity<Entrega> buscar(@PathVariable Long entregaId) {	//Permite controlar melhor a resposta como o codigo que sera devolvivo em caso de nao encontrar cliente
+	public ResponseEntity<EntregaModel> buscar(@PathVariable Long entregaId) {	//Permite controlar melhor a resposta como o codigo que sera devolvivo em caso de nao encontrar cliente
 		return entregaRepository.findById(entregaId)
-				.map(ResponseEntity::ok)
+				.map(entrega -> ResponseEntity.ok(entregaAssembler.toModel(entrega)))
 				.orElse(ResponseEntity.notFound().build());
 	}
 }

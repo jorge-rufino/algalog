@@ -1,6 +1,6 @@
 package com.algaworks.algalog.domain.service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ public class EntregaService {
 		
 		entrega.setCliente(cliente);	
 		entrega.setStatus(StatusEntrega.PENDENTE);	//Toda entrega comeca pendente
-		entrega.setDataPedido(LocalDateTime.now());			//Pega a hora no momento do pedido
+		entrega.setDataPedido(OffsetDateTime.now());			//Pega a hora no momento do pedido
 		
 		return entregaRepository.save(entrega);
 	}

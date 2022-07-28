@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import com.algaworks.algalog.api.model.ClienteModel;
 import com.algaworks.algalog.api.model.EntregaModel;
 import com.algaworks.algalog.api.model.input.EntregaInputModel;
+import com.algaworks.algalog.domain.model.Cliente;
 import com.algaworks.algalog.domain.model.Entrega;
 
 import lombok.AllArgsConstructor;
@@ -24,6 +26,10 @@ public class EntregaAssembler {
 		return modelMapper.map(entrega, EntregaModel.class);
 	}
 	
+	public ClienteModel toModel(Cliente cliente) {
+		return modelMapper.map(cliente, ClienteModel.class);
+	}
+	
 //	Converte uma Lista de Entregas do Domain Model para uma lista de Entregas do Representation Model
 	public List<EntregaModel> toCollectionModel(List<Entrega> entregas){
 		return entregas.stream()
@@ -32,6 +38,7 @@ public class EntregaAssembler {
 	}
 		
 //	Converte uma Entrega do Representation Model para uma Entrega do Domain Model 
+//	Método usado no Input
 	public Entrega toEntity(EntregaInputModel entregaModel) {
 		return modelMapper.map(entregaModel, Entrega.class);
 	}

@@ -1,1 +1,1 @@
-# API do curso gratuito da AlgaWorks
+# API do curso gratuito da AlgaWorks de Java com Springboot
